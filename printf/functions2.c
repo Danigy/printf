@@ -121,7 +121,6 @@ int print_reverse(va_list types, char buffer[],int flags, int width, int precisi
 		;
 	
 	for (i = i - 1; i >= 0; i--)
-		
 	{
 		
 		char z = str[i];
