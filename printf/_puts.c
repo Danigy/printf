@@ -17,5 +17,6 @@ int _puts(char *string)
 		string++;
 		contador++;
 	}
+	
 	return (contador);
 }
