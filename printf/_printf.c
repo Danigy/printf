@@ -26,11 +26,8 @@ int _printf(const char *format, ...)
 			buffer[buff_ind++] = format[i];
 			if (buff_ind == BUFF_SIZE)
 				print_buffer(buffer, &buff_ind);
-<<<<<<< HEAD
                         printed_chars++;
-=======
 			printed_chars++;
->>>>>>> printf team 'Daniel & Weldsh' project update
 		}
 		else
 		{
