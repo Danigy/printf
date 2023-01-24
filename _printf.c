@@ -1,4 +1,4 @@
-include "main.h"
+#include "main.h"
 
 void print_buffer(char buffer[], int *buff_ind);
 
@@ -7,7 +7,6 @@ void print_buffer(char buffer[], int *buff_ind);
  * @format: format.
  * Return: Printed chars.
  */
-
 
 int _printf(const char *format, ...)
 {
@@ -18,7 +17,9 @@ int _printf(const char *format, ...)
 
 	if (format == NULL)
 		return (-1);
+
 	va_start(list, format);
+
 	for (i = 0; format && format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
@@ -26,7 +27,7 @@ int _printf(const char *format, ...)
 			buffer[buff_ind++] = format[i];
 			if (buff_ind == BUFF_SIZE)
 				print_buffer(buffer, &buff_ind);
-                        printed_chars++;
+			/* write(1, &format[i], 1);*/
 			printed_chars++;
 		}
 		else
@@ -44,20 +45,24 @@ int _printf(const char *format, ...)
 			printed_chars += printed;
 		}
 	}
+
 	print_buffer(buffer, &buff_ind);
+
 	va_end(list);
+
 	return (printed_chars);
 }
 
 /**
  * print_buffer - Prints the contents of the buffer if it exist
  * @buffer: Array of chars
- * @buff_ind: Index where to add next char to represents the length.
+ * @buff_ind: Index at which to add next char, represents the length.
  */
 
 void print_buffer(char buffer[], int *buff_ind)
 {
 	if (*buff_ind > 0)
 		write(1, &buffer[0], *buff_ind);
+
 	*buff_ind = 0;
 }
