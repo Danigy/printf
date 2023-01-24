@@ -1,6 +1,6 @@
 #include "main.h"
 
-/******** PRINT POINTER ********/
+/* PRINT POINTER */
 
 /**
  * print_pointer - Prints the value of a pointer variable
@@ -13,10 +13,11 @@
  * Return: Number of chars printed.
  */
 
-int print_pointer(va_list types, char buffer[],int flags, int width, int precision, int size)
+int print_pointer(va_list types, char buffer[],
+		  int flags, int width, int precision, int size)
 {
 	char extra_c = 0, padd = ' ';
-	int ind = BUFF_SIZE - 2, length = 2, padd_start = 1;
+	int ind = BUFF_SIZE - 2, length = 2, padd_start = 1; /* length=2, for '0x' */
 	unsigned long num_addrs;
 	char map_to[] = "0123456789abcdef";
 	void *addrs = va_arg(types, void *);
@@ -48,14 +49,16 @@ int print_pointer(va_list types, char buffer[],int flags, int width, int precisi
 
 	ind++;
 
-	return (write_pointer(buffer, ind, length, width, flags, padd, extra_c, padd_start));
+	/*return (write(1, &buffer[i], BUFF_SIZE - i - 1));*/
+	return (write_pointer(buffer, ind, length,
+			      width, flags, padd, extra_c, padd_start));
 }
 
-/******** PRINT NON PRINTABLE ********/
+/* PRINT ASCII NON-PRINTABLE CHARACTERS */
 
 /**
  * print_non_printable - Prints ascii codes in hexa of non printable chars
- * @types: Lista of arguments
+ * @types: List of arguments
  * @buffer: Buffer array to handle print
  * @flags:  Calculates active flags
  * @width: get width
@@ -64,10 +67,12 @@ int print_pointer(va_list types, char buffer[],int flags, int width, int precisi
  * Return: Number of chars printed
  */
 
-int print_non_printable(va_list types, char buffer[], int flags, int width, int precision, int size)
+int print_non_printable(va_list types, char buffer[],
+			int flags, int width, int precision, int size)
 {
 	int i = 0, offset = 0;
 	char *str = va_arg(types, char *);
+
 	UNUSED(flags);
 	UNUSED(width);
 	UNUSED(precision);
@@ -75,23 +80,27 @@ int print_non_printable(va_list types, char buffer[], int flags, int width, int 
 
 	if (str == NULL)
 		return (write(1, "(null)", 6));
+
 	while (str[i] != '\0')
 	{
 		if (is_printable(str[i]))
 			buffer[i + offset] = str[i];
 		else
 			offset += append_hexa_code(str[i], buffer, i + offset);
+
 		i++;
 	}
+
 	buffer[i + offset] = '\0';
+
 	return (write(1, buffer, i + offset));
 }
 
-/******** PRINT REVERSE ********/
+/* PRINT REVERSE STRINGS */
 
 /**
  * print_reverse - Prints reverse string.
- * @types: Lista of arguments
+ * @types: List of arguments
  * @buffer: Buffer array to handle print
  * @flags:  Calculates active flags
  * @width: get width
@@ -100,7 +109,8 @@ int print_non_printable(va_list types, char buffer[], int flags, int width, int 
  * Return: Numbers of chars printed
  */
 
-int print_reverse(va_list types, char buffer[],int flags, int width, int precision, int size)
+int print_reverse(va_list types, char buffer[],
+		  int flags, int width, int precision, int size)
 {
 	char *str;
 	int i, count = 0;
@@ -111,16 +121,18 @@ int print_reverse(va_list types, char buffer[],int flags, int width, int precisi
 	UNUSED(size);
 
 	str = va_arg(types, char *);
+
 	if (str == NULL)
 	{
 		UNUSED(precision);
+
 		str = ")Null(";
 	}
 	for (i = 0; str[i]; i++)
 		;
+
 	for (i = i - 1; i >= 0; i--)
 	{
-
 		char z = str[i];
 
 		write(1, &z, 1);
@@ -129,11 +141,11 @@ int print_reverse(va_list types, char buffer[],int flags, int width, int precisi
 	return (count);
 }
 
-/******** PRINT A STRING IN ROT13 ********/
+/* PRINT STRINGS IN ROT13 ENCODING*/
 
 /**
- * print_rot13string - Print a string in rot13.
- * @types: Lista of arguments
+ * print_rot13string - Print a string in rot13, it "rotate" by 13 positions.
+ * @types: List of arguments
  * @buffer: Buffer array to handle print
  * @flags:  Calculates active flags
  * @width: get width
@@ -142,7 +154,8 @@ int print_reverse(va_list types, char buffer[],int flags, int width, int precisi
  * Return: Numbers of chars printed
  */
 
-int print_rot13string(va_list types, char buffer[], int flags, int width, int precision, int size)
+int print_rot13string(va_list types, char buffer[],
+		      int flags, int width, int precision, int size)
 {
 	char x;
 	char *str;
